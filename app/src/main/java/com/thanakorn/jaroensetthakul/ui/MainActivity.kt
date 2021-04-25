@@ -1,20 +1,24 @@
 package com.thanakorn.jaroensetthakul.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.thanakorn.jaroensetthakul.R
 import com.thanakorn.jaroensetthakul.adapters.CoinAdapter
 import com.thanakorn.jaroensetthakul.databinding.ActivityMainBinding
 import com.thanakorn.jaroensetthakul.utilities.Constants.Companion.QUERY_PAGE_SIZE
 import com.thanakorn.jaroensetthakul.utilities.Resource
 import com.thanakorn.jaroensetthakul.viewmodels.CoinViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -53,7 +57,7 @@ class MainActivity : AppCompatActivity() {
          binding.refreshLayout.isRefreshing = true
 
          viewModel.coins.observe(this, Observer { response ->
-             when(response){
+             when (response) {
                  is Resource.Success -> {
                      hideProgressBar()
                      binding.refreshLayout.isRefreshing = false
@@ -81,10 +85,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun hideProgressBar() {
+        binding.refreshLayout.isRefreshing = false
         binding.ProgressBar.visibility = View.INVISIBLE
     }
 
     private fun showProgressBar() {
+        binding.refreshLayout.isRefreshing = true
         binding.ProgressBar.visibility = View.VISIBLE
     }
 
@@ -134,6 +140,10 @@ class MainActivity : AppCompatActivity() {
         binding.rvCoinRanking.apply {
             adapter = coinAdapter
             layoutManager = LinearLayoutManager(this@MainActivity)
+            val decorator = DividerItemDecoration(applicationContext, LinearLayoutManager.VERTICAL)
+            decorator.setDrawable(ContextCompat.getDrawable(applicationContext, R.drawable.recyecle_divider)!!)
+            binding.rvCoinRanking.addItemDecoration(decorator)
+
             addOnScrollListener(this@MainActivity.scrollListener)
         }
     }
