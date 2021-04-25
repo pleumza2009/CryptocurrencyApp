@@ -8,6 +8,11 @@
 
 
 
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/refreshLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
 
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,6 +26,8 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
+
     <ProgressBar
         android:id="@+id/ProgressBar"
         android:layout_width="wrap_content"
@@ -32,6 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
 

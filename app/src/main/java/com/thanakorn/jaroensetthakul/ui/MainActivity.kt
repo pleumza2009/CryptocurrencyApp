@@ -36,6 +36,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        binding.refreshLayout.setOnRefreshListener {
+            fetchData()
+            coinAdapter.notifyDataSetChanged()
+        }
+
+
+
 
 
     }
@@ -43,15 +50,19 @@ class MainActivity : AppCompatActivity() {
 
 
      fun fetchData(){
+         binding.refreshLayout.isRefreshing = true
+
          viewModel.coins.observe(this, Observer { response ->
              when(response){
                  is Resource.Success -> {
                      hideProgressBar()
+                     binding.refreshLayout.isRefreshing = false
                      response.data.let { coinResponse ->
                          coinAdapter.differ.submitList(coinResponse?.data?.coins)
                      }
                  }
                  is Resource.Error -> {
+                     binding.refreshLayout.isRefreshing = false
                      hideProgressBar()
                      response.message?.let { message ->
                          Log.e(TAG, "An error occured: $message")
