@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.ImageView
 import androidx.core.view.OneShotPreDrawListener.add
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -79,6 +80,7 @@ class CoinAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(),Filterable {
             }
         }else{
             (holder as NormalViewHolder).binding.apply {
+                ivCoinView.scaleType = ImageView.ScaleType.FIT_CENTER
                 ivCoinView.load(coin.iconUrl,holder.imageLoader)
                 tvName.text = coin.name
                 val description = coin.description
