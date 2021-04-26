@@ -22,7 +22,7 @@ data class Coin(
     val penalty: Boolean?,
     val price: String?,
     val rank: Int?,
-    val slug: String,
+    val slug: String?,
     val socials: List<Social>?,
     val symbol: String?,
     val totalSupply: Float?,
