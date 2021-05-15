@@ -7,7 +7,8 @@ class CoinRepository @Inject constructor(
     val coinApi: CoinApi
 ) {
 
-    suspend fun getCoins() = coinApi.getCoins()
+    suspend fun getCoins(limit : Int) = coinApi.getCoins(base="USD",limit)
+
 
 
 }
