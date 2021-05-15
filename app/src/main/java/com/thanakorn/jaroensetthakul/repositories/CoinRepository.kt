@@ -10,5 +10,4 @@ class CoinRepository @Inject constructor(
     suspend fun getCoins(limit : Int) = coinApi.getCoins(base="USD",limit)
 
 
-
 }

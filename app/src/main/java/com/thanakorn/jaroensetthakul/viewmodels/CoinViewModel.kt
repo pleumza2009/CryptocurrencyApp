@@ -36,26 +36,9 @@ class CoinViewModel @ViewModelInject constructor(
        safeCall()
     }
 
-    fun gerCoinsFilter() = viewModelScope.launch {
-        safeCallFilter()
-    }
-
-
-
-    private fun handleCoinResponse(response: Response<CoinsResponse>) : Resource<CoinsResponse> {
+    private fun handleBreakingCoinResponse(response: Response<CoinsResponse>) : Resource<CoinsResponse> {
         if(response.isSuccessful) {
             limit += 10
-            response.body()?.let { resultResponse ->
-                return Resource.Success(resultResponse)
-            }
-        }
-        return Resource.Error(response.message())
-    }
-
-
-    private fun handleFilterCoinResponse(response: Response<CoinsResponse>) : Resource<CoinsResponse> {
-        if(response.isSuccessful) {
-            limit = 100
             response.body()?.let { resultResponse ->
                 return Resource.Success(resultResponse)
             }
@@ -70,7 +53,7 @@ class CoinViewModel @ViewModelInject constructor(
         try {
             if (hasInternetConnection()) {
                 val response = coinRepository.getCoins(limit)
-                coins.postValue(handleCoinResponse(response!!))
+                coins.postValue(handleBreakingCoinResponse(response!!))
             }else{
                 coins.postValue(Resource.Error("No internet connection"))
             }
@@ -82,29 +65,6 @@ class CoinViewModel @ViewModelInject constructor(
 
         }
     }
-
-
-    private suspend fun  safeCallFilter(){
-        coins.postValue(Resource.Loading())
-        try {
-            if (hasInternetConnection()) {
-                val response = coinRepository.getCoins(limit)
-                coins.postValue(handleFilterCoinResponse(response!!))
-            }else{
-                coins.postValue(Resource.Error("No internet connection"))
-            }
-        }catch (t:Throwable){
-            when(t){
-                is IOException -> coins.postValue(Resource.Error("Network Failure"))
-                else -> coins.postValue(Resource.Error("Conversion Error"))
-            }
-
-        }
-    }
-
-
-
-
 
     private fun hasInternetConnection(): Boolean {
         val connectivityManager = getApplication<CoinApplication>().getSystemService(
